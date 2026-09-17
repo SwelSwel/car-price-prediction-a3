@@ -1,0 +1,11 @@
+
+
+services:
+  dash:
+    image: swelswel/car-prediction-dash:a2.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"
+      

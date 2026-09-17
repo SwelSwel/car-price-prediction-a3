@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  dash:
+    command: python3 app.py
+    image: swelswel/car-prediction-dash:a2.0
+    platform: linux/x86_64
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8050
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.dash-st127401.loadbalancer.server.port=8050
+      - traefik.http.routers.dash-st127401.rule=Host(`web-st127401.ml.brain.cs.ait.ac.th`)
+      - traefik.http.routers.dash-st127401.tls=true
+      - traefik.http.routers.dash-st127401.tls.certresolver=letsencrypt
+      - traefik.http.routers.dash-st127401.entrypoints=websecure
+    networks:
+      - default
+      - traefik_default
+
+networks:
+  default:
+  traefik_default:
+    external: true
