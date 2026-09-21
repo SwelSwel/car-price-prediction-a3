@@ -58,4 +58,4 @@ jobs:
           SSHCONFIG
           chmod 600 ~/.ssh/config
           export SSHPASS="${{ secrets.SSH_PASSWORD }}"
-          sshpass -e ssh ml-brain "cd ~/app && docker pull swelswel/car-prediction-dash:a3.0 && docker compose down && docker compose up -d"
+          sshpass -e ssh ml-brain "cd ~/app && sed -i 's|swelswel/car-prediction-dash:a2.0|swelswel/car-prediction-dash:a3.0|' docker-compose.yaml && docker pull swelswel/car-prediction-dash:a3.0 && docker compose down && docker compose up -d"
