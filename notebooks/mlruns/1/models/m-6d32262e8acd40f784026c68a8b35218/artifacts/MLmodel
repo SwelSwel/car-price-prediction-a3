@@ -1,0 +1,26 @@
+artifact_path: /Projects/car-price-prediction-a3/notebooks/mlruns/1/models/m-6d32262e8acd40f784026c68a8b35218/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.13.13
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.8.0
+    skops_trusted_types:
+    - __main__.LogisticRegression
+    - __main__.NoPenalty
+    - __main__.RidgePenalty
+mlflow_version: 3.16.0
+model_id: m-6d32262e8acd40f784026c68a8b35218
+model_size_bytes: 1496380
+model_uuid: m-6d32262e8acd40f784026c68a8b35218
+prompts: null
+run_id: 824c619dd2ed4b94894b13924c254c4b
+utc_time_created: '2026-09-21 05:34:34.751702'
