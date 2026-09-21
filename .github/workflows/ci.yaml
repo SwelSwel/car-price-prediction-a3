@@ -37,6 +37,11 @@ jobs:
           docker build -t swelswel/car-prediction-dash:a3.0 ./app
           docker push swelswel/car-prediction-dash:a3.0
 
+      - name: Debug SSH connectivity
+        run: |
+          ssh-keyscan -p 22 bazooka.cs.ait.ac.th || echo "Cannot reach bazooka"
+          ssh-keyscan -p 22 ml-brain.cs.ait.ac.th || echo "Cannot reach ml-brain"
+          
       - name: Deploy to server
         uses: appleboy/ssh-action@v1
         with:
