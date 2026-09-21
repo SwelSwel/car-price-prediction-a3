@@ -2,7 +2,7 @@
 
 services:
   dash:
-    image: swelswel/car-prediction-dash:a2.0
+    image: swelswel/car-prediction-dash:a3.0
     build:
       context: .
       dockerfile: Dockerfile

@@ -33,7 +33,7 @@ dev = [
 ]
 
 [tool.uv]
-package = true
+package = false
 
 [project.scripts]
 python-project-starter = "project:cli"

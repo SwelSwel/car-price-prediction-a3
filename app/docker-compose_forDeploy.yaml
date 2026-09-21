@@ -2,7 +2,7 @@ version: '3.9'
 services:
   dash:
     command: python3 app.py
-    image: swelswel/car-prediction-dash:a2.0
+    image: swelswel/car-prediction-dash:a3.0
     platform: linux/x86_64
     environment:
       - HOST=0.0.0.0
