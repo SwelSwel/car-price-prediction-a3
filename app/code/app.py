@@ -17,6 +17,17 @@ num_cols = ['year', 'km_driven', 'mileage', 'engine', 'max_power']
 cat_cols = ['brand', 'fuel', 'seller_type', 'transmission']
 remaining_cols = ['owner', 'seats']
 
+# Load A3 model (Logistic Regression Classification)
+a3_model = joblib.load('a3_model.pkl')
+
+# Class labels for A3 price categories
+class_labels = {
+    0: "Budget (Lowest 25%)",
+    1: "Economy (25-50%)",
+    2: "Mid-range (50-75%)",
+    3: "Premium (Top 25%)"
+}
+
 app = Dash(__name__)
 
 # Shared input fields
@@ -98,6 +109,19 @@ app.layout = html.Div([
                 html.H3(id='output-new')
             ])
         ]),
+         dcc.Tab(label='A3 Model (Logistic Regression)', children=[
+            html.Div([
+                html.H3("Multinomial Logistic Regression Classifier (Assignment 3)"),
+                html.P("This model classifies cars into 4 price categories using "
+                       "multinomial logistic regression with Ridge regularization. "
+                       ),
+                html.P("How to use: Fill in all the fields below with your car's details, "
+                       "then click Predict to see the predicted price category."),
+                *create_input_fields('a3'),
+                html.Button("Predict", id='predict_btn_a3', n_clicks=0),
+                html.H3(id='output-a3')
+            ])
+        ]),       
     ])
 ])
 
@@ -141,6 +165,27 @@ def predict_new(n_clicks, year, brand, fuel, km_driven, transmission,
     sample_with_intercept = np.concatenate((intercept, sample_final), axis=1)
     predicted = np.exp(new_model.predict(sample_with_intercept))
     return f"The predicted selling price is {predicted[0]:,.2f}"
+
+# A3 model callback
+@app.callback(
+    Output('output-a3', 'children'),
+    Input('predict_btn_a3', 'n_clicks'),
+    State('year-a3', 'value'), State('brand-a3', 'value'),
+    State('fuel-a3', 'value'), State('km_driven-a3', 'value'),
+    State('transmission-a3', 'value'), State('owner-a3', 'value'),
+    State('mileage-a3', 'value'), State('engine-a3', 'value'),
+    State('max_power-a3', 'value'), State('seats-a3', 'value'),
+    State('seller_type-a3', 'value'),
+    prevent_initial_call=True
+)
+def predict_a3(n_clicks, year, brand, fuel, km_driven, transmission,
+               owner, mileage, engine, max_power, seats, seller_type):
+    sample_final = preprocess(year, brand, fuel, km_driven, transmission,
+                              owner, mileage, engine, max_power, seats, seller_type)
+    intercept = np.ones((sample_final.shape[0], 1))
+    sample_with_intercept = np.concatenate((intercept, sample_final), axis=1)
+    predicted_class = a3_model.predict(sample_with_intercept)[0]
+    return f"Predicted price category: Class {predicted_class} - {class_labels[predicted_class]}"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8050)

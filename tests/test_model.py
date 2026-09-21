@@ -4,11 +4,11 @@ import numpy as np
 import joblib
 
 # Add project root to path so we can import model_classes
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from models.model_classes import LogisticRegression, RidgePenalty, NoPenalty
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app', 'code'))
+from model_classes import LogisticRegression, RidgePenalty, NoPenalty
 
 # Load the saved model
-MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'best_model.pkl')
+MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'code', 'a3_model.pkl')
 model = joblib.load(MODEL_PATH)
 
 def test_model_input():
