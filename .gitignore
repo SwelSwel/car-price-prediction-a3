@@ -215,9 +215,6 @@ data/*
 !data/experiment_results.csv
 !data/.keeps
 
-models/*
-local.env
-
 .devcontainer/**/data
 
 !.devcontainer/dev/.env
