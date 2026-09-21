@@ -42,10 +42,10 @@ jobs:
         with:
           host: ml-brain.cs.ait.ac.th
           username: st127401
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           proxy_host: bazooka.cs.ait.ac.th
           proxy_username: st127401
-          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ~/
             docker pull swelswel/car-prediction-dash:a3.0
