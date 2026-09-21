@@ -43,5 +43,16 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+          cat > ~/.ssh/config << 'SSHCONFIG'
+          Host bazooka
+            HostName bazooka.cs.ait.ac.th
+            User st127401
+          Host ml-brain
+            HostName ml.brain.cs.ait.ac.th
+            User st127401
+            IdentityFile ~/.ssh/id_ed25519
+            ProxyJump bazooka
+          SSHCONFIG
+          chmod 600 ~/.ssh/config
           export SSHPASS="${{ secrets.SSH_PASSWORD }}"
-          sshpass -e ssh -o StrictHostKeyChecking=no st127401@bazooka.cs.ait.ac.th "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 st127401@ml.brain.cs.ait.ac.th 'docker pull swelswel/car-prediction-dash:a3.0 && docker compose -f docker-compose.yaml down && docker compose -f docker-compose.yaml up -d'"
+          sshpass -e ssh -o StrictHostKeyChecking=no ml-brain "docker pull swelswel/car-prediction-dash:a3.0 && docker compose -f docker-compose.yaml down && docker compose -f docker-compose.yaml up -d"
