@@ -16,7 +16,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install numpy scikit-learn joblib pytest
+          pip install numpy scikit-learn joblib pytest matplotlib
       
       - name: Run tests
         run: |
