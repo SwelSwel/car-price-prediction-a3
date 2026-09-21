@@ -44,6 +44,9 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           cat > ~/.ssh/config << 'SSHCONFIG'
+          Host *
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
           Host bazooka
             HostName bazooka.cs.ait.ac.th
             User st127401
@@ -55,4 +58,4 @@ jobs:
           SSHCONFIG
           chmod 600 ~/.ssh/config
           export SSHPASS="${{ secrets.SSH_PASSWORD }}"
-          sshpass -e ssh -o StrictHostKeyChecking=no ml-brain "docker pull swelswel/car-prediction-dash:a3.0 && docker compose -f docker-compose.yaml down && docker compose -f docker-compose.yaml up -d"
+          sshpass -e ssh ml-brain "docker pull swelswel/car-prediction-dash:a3.0 && docker compose -f docker-compose.yaml down && docker compose -f docker-compose.yaml up -d"
