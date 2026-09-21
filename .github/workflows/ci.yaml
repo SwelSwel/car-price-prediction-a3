@@ -21,3 +21,33 @@ jobs:
       - name: Run tests
         run: |
           PYTHONPATH=${{ github.workspace }} python -m pytest tests/ -v
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t swelswel/car-prediction-dash:a3.0 ./app
+          docker push swelswel/car-prediction-dash:a3.0
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ml-brain.cs.ait.ac.th
+          username: st127401
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: bazooka.cs.ait.ac.th
+          proxy_username: st127401
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/
+            docker pull swelswel/car-prediction-dash:a3.0
+            docker compose -f docker-compose.yaml down
+            docker compose -f docker-compose.yaml up -d
