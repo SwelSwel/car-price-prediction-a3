@@ -37,22 +37,11 @@ jobs:
           docker build -t swelswel/car-prediction-dash:a3.0 ./app
           docker push swelswel/car-prediction-dash:a3.0
 
-      - name: Debug SSH connectivity
-        run: |
-          ssh-keyscan -p 22 bazooka.cs.ait.ac.th || echo "Cannot reach bazooka"
-          ssh-keyscan -p 22 ml-brain.cs.ait.ac.th || echo "Cannot reach ml-brain"
-          
       - name: Deploy to server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ml-brain.cs.ait.ac.th
-          username: st127401
-          password: ${{ secrets.SSH_PASSWORD }}
-          proxy_host: bazooka.cs.ait.ac.th
-          proxy_username: st127401
-          proxy_password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            cd ~/
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=keyboard-interactive,password -J st127401@bazooka.cs.ait.ac.th st127401@ml-brain.cs.ait.ac.th << 'EOF'
             docker pull swelswel/car-prediction-dash:a3.0
             docker compose -f docker-compose.yaml down
             docker compose -f docker-compose.yaml up -d
+          EOF
